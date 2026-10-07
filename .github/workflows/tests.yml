@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Live tests are skipped here because no OPENAI_API_KEY is set,
+      # so CI stays free, fast and deterministic.
+      - name: Run tests with coverage
+        run: pytest --cov=app --cov-report=term-missing
